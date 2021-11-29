@@ -36,7 +36,7 @@ namespace Componentes {
             return Text.Contains("1") || Text.Contains("2") || Text.Contains("3") || Text.Contains("4") || Text.Contains("5") || Text.Contains("6") || Text.Contains("7") || Text.Contains("8") || Text.Contains("9");
         }
 
-        public static bool ValidaCNPJ (string cnpj) {
+        private bool ValidaCNPJ (string cnpj) {
             // Remove as pontuações
             cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
 
