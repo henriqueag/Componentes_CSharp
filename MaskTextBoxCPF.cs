@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Windows.Forms;
 
 namespace Componentes {
     class MaskTextBoxCPF : MaskedTextBox {
-        
-        
+
+
         protected override void OnEnter (EventArgs e) {
-            base.OnEnter(e);            
+            base.OnEnter(e);
             if (ValidaSeTemNumero()) {
                 Select();
             } else {
@@ -22,7 +21,7 @@ namespace Componentes {
         }
 
         protected override void OnLeave (EventArgs e) {
-            base.OnLeave(e);            
+            base.OnLeave(e);
             if (ValidaSeTemNumero()) {
                 if (!ValidaCPF(Text)) {
                     MessageBox.Show("O CPF inserido é inválido, digite novamente.", "Validação do CPF", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -52,19 +51,14 @@ namespace Componentes {
                 case "88888888888": return false;
                 case "99999999999": return false;
             }
-            if (cpf.Length < 11) {
+            if (cpf.Length != 11) {
                 return false;
-            }
-
-            List<int> list = new List<int>();
-            for (int i = 0; i < cpf.Length; i++) {
-                list.Add(int.Parse(cpf.Substring(i, 1)));
             }
 
             int soma1 = 0;
             int cont = 10;
-            for (int i = 0; i < list.Count; i++) {
-                soma1 += list[i] * cont;
+            for (int i = 0; i < cpf.Length; i++) {
+                soma1 += Convert.ToInt32(cpf.Substring(i, 1)) * cont;
                 cont--;
                 if (cont == 1) break;
             }
@@ -72,8 +66,8 @@ namespace Componentes {
 
             int soma2 = 0;
             cont = 11;
-            for (int i = 0; i < 10; i++) {
-                soma2 += list[i] * cont;
+            for (int i = 0; i < cpf.Length; i++) {
+                soma2 += Convert.ToInt32(cpf.Substring(i, 1)) * cont;
                 cont--;
                 if (cont == 1) break;
             }
@@ -85,6 +79,6 @@ namespace Componentes {
         private string AplicaMascara () {
             Culture = new System.Globalization.CultureInfo("en-US");
             return "000.000.000-00";
-    }
+        }
     }
 }
