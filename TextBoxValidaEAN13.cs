@@ -23,7 +23,11 @@ namespace Componentes {
                 if (resultado == DialogResult.Yes) {
                     Select();
                 } else {
-                    Text = Convert.ToInt64(Text).ToString("0000000000000");
+                    if (Text.Length > 0) {
+                        Text = Convert.ToInt64(Text).ToString("0000000000000");
+                    } else {
+                        return;
+                    }
                 }
             }
         }
