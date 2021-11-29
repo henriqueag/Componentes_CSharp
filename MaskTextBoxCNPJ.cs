@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Windows.Forms;
 
 namespace Componentes {
@@ -38,9 +37,10 @@ namespace Componentes {
         }
 
         public static bool ValidaCNPJ (string cnpj) {
-
+            // Remove as pontuações
             cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
 
+            // Verifica se a escrita veio de alguma dessas formas e se o tamanho é diferente de 14
             switch (cnpj) {
                 case "11111111111111": return false;
                 case "22222222222222": return false;
@@ -53,30 +53,23 @@ namespace Componentes {
                 case "99999999999999": return false;
             }
 
-            if (cnpj.Length < 14) {
+            if (cnpj.Length != 14) {
                 return false;
             }
 
             int soma1 = 0;
-            int soma2 = 0;
-            List<int> list = new List<int>();
-            // Nesse loop é criado um list com os numeros do CNPJ passado por parametro
-            for (int i = 0; i < cnpj.Length; i++) {
-                list.Add(Convert.ToInt32(cnpj.Substring(i, 1)));
-            }
-            // agora é feito o somatório acumulado do produto das 4 posições iniciais do list pela variável cont em decremento
-            // ficando list[0] * 5, list[0] * 4, list[0] * 3, list[0] * 2
             int cont = 5;
+            // Percorre a string e em cada iteração faz a conversão para int da posição da string referente ao i em uma posição a frente
+            // Decrementa a variável cont
+            // A cada iteração faz a soma acumulada na variável soma1
             for (int i = 0; i < 4; i++) {
-                soma1 += list[i] * cont;
+                soma1 += Convert.ToInt32(cnpj.Substring(i, 1)) * cont;
                 cont--;
             }
-            // agora é feito o somatório acumulado do produto da posição 5 até a ultima posição da lista pela variável cont em decremento
-            // ficando list[0] * 9, list[0] * 8, list[0] * 7, list[0] * 6...
-            // quando cont é 2 o loop é parado com o comando break
+            // Aqui é o mesmo procedimento de cima, porém nessa parte o cont começa com 9 e quando chega em 1 para o loop for
             cont = 9;
-            for (int i = 4; i < list.Count; i++) {
-                soma1 += list[i] * cont;
+            for (int i = 4; i < cnpj.Length; i++) {
+                soma1 += Convert.ToInt32(cnpj.Substring(i, 1)) * cont;
                 cont--;
                 if (cont == 1) break;
             }
@@ -84,14 +77,15 @@ namespace Componentes {
             int primeiroVerificador = soma1 % 11 < 2 ? 0 : 11 - soma1 % 11;
 
             // essa parte apenas refaz o procedimentos explicados acima, porém com a diferença que agora cont vale 6
+            int soma2 = 0;
             cont = 6;
             for (int i = 0; i < 5; i++) {
-                soma2 += list[i] * cont;
+                soma2 += Convert.ToInt32(cnpj.Substring(i, 1)) * cont;
                 cont--;
             }
             cont = 9;
-            for (int i = 5; i < list.Count; i++) {
-                soma2 += list[i] * cont;
+            for (int i = 5; i < cnpj.Length; i++) {
+                soma2 += Convert.ToInt32(cnpj.Substring(i, 1)) * cont;
                 cont--;
                 if (cont == 1) break;
             }
